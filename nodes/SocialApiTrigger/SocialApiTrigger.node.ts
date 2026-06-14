@@ -58,7 +58,7 @@ export class SocialApiTrigger implements INodeType {
 				const res = await apiRequest.call(this, 'GET', '/webhooks/events');
 				const data = (res.data as IDataObject[]) ?? [];
 				return data.map((e) => ({
-					name: `${e.event as string}${e.description ? ` — ${e.description as string}` : ''}`,
+					name: `${e.event as string}${e.description ? `: ${e.description as string}` : ''}`,
 					value: e.event as string,
 				}));
 			},
@@ -109,7 +109,7 @@ export class SocialApiTrigger implements INodeType {
 							`/webhooks/${data.webhookId as string}`,
 						);
 					} catch {
-						// ignore — endpoint may already be gone
+						// ignore: endpoint may already be gone
 					}
 					delete data.webhookId;
 					delete data.webhookSecret;

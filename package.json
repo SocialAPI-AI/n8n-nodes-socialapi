@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-socialapi",
   "version": "0.1.0",
-  "description": "n8n community nodes for SocialAPI.ai — manage social accounts, publish posts, work the inbox, and trigger on events.",
+  "description": "n8n community nodes for SocialAPI.ai: manage social accounts, publish posts, work the inbox, and trigger on events.",
   "keywords": ["n8n-community-node-package", "n8n", "socialapi", "social media"],
   "license": "MIT",
   "homepage": "https://social-api.ai",

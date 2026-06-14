@@ -1,2 +1,34 @@
 import type { INodeProperties } from 'n8n-workflow';
-export const commentFields: INodeProperties[] = [];
+const showFor = (ops: string[]) => ({ show: { resource: ['comment'], operation: ops } });
+
+export const commentFields: INodeProperties[] = [
+	{
+		displayName: 'Operation', name: 'operation', type: 'options', noDataExpression: true,
+		displayOptions: { show: { resource: ['comment'] } },
+		options: [
+			{ name: 'Delete', value: 'delete', action: 'Delete a comment' },
+			{ name: 'Get Many', value: 'getAll', action: 'Get many comments on a post' },
+			{ name: 'Get Replies', value: 'getReplies', action: 'Get replies to a comment' },
+			{ name: 'Hide', value: 'hide', action: 'Hide a comment' },
+			{ name: 'Like', value: 'like', action: 'Like a comment' },
+			{ name: 'List Commented Posts', value: 'listPosts', action: 'List posts that have comments' },
+			{ name: 'Private Reply', value: 'privateReply', action: 'Send a private reply' },
+			{ name: 'Reply', value: 'reply', action: 'Reply to a comment' },
+			{ name: 'Unhide', value: 'unhide', action: 'Unhide a comment' },
+			{ name: 'Unlike', value: 'unlike', action: 'Unlike a comment' },
+		],
+		default: 'getAll',
+	},
+	{ displayName: 'Inbox Post ID', name: 'postId', type: 'string', default: '', required: true,
+		displayOptions: showFor(['getAll', 'getReplies', 'reply', 'delete', 'hide', 'unhide', 'like', 'unlike', 'privateReply']) },
+	{ displayName: 'Comment ID', name: 'commentId', type: 'string', default: '', required: true,
+		displayOptions: showFor(['getReplies', 'delete', 'hide', 'unhide', 'like', 'unlike', 'privateReply']) },
+	{ displayName: 'Text', name: 'text', type: 'string', typeOptions: { rows: 3 }, default: '', required: true,
+		displayOptions: showFor(['reply', 'privateReply']) },
+	{ displayName: 'Reply To Comment ID', name: 'replyToCommentId', type: 'string', default: '',
+		displayOptions: showFor(['reply']), description: 'Optional parent comment to reply to (omit to reply at post level)' },
+	{ displayName: 'Account ID', name: 'account_id', type: 'string', default: '', displayOptions: showFor(['listPosts']) },
+	{ displayName: 'Return All', name: 'returnAll', type: 'boolean', default: false, description: 'Whether to return all results or only up to a given limit', displayOptions: showFor(['getAll', 'getReplies', 'listPosts']) },
+	{ displayName: 'Limit', name: 'limit', type: 'number', default: 50, description: 'Max number of results to return', typeOptions: { minValue: 1 },
+		displayOptions: { show: { resource: ['comment'], operation: ['getAll', 'getReplies', 'listPosts'], returnAll: [false] } } },
+];

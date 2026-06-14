@@ -1,0 +1,27 @@
+# Local development harness for iterating on n8n-nodes-socialapi.
+# n8n discovers custom nodes by scanning ~/.n8n/custom recursively for
+# *.node.js / *.credentials.js, so we bind-mount the built ./dist there.
+#
+# Iterate:
+#   1. npm run dev      # tsc --watch: rebuilds ./dist on every save
+#   2. edit code        # N8N_DEV_RELOAD picks up the rebuilt files
+#   (or, without watch: npm run build && docker compose restart n8n)
+#
+# Open http://localhost:5678
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: socialapi-n8n-dev
+    ports:
+      - '5678:5678'
+    environment:
+      - N8N_SECURE_COOKIE=false        # allow plain http://localhost
+      - N8N_DEV_RELOAD=true            # hot-reload custom nodes when ./dist changes
+      - N8N_LOG_LEVEL=info
+      - GENERIC_TIMEZONE=Europe/Paris
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./dist:/home/node/.n8n/custom:ro
+
+volumes:
+  n8n_data:

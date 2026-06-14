@@ -15,6 +15,10 @@ module.exports = {
       files: ['./credentials/**/*.ts'],
       plugins: ['eslint-plugin-n8n-nodes-base'],
       extends: ['plugin:n8n-nodes-base/credentials'],
+      rules: {
+        // documentationUrl is a full HTTP URL for community nodes, not a camelCase slug
+        'n8n-nodes-base/cred-class-field-documentation-url-miscased': 'off',
+      },
     },
     {
       files: ['./nodes/**/*.ts'],

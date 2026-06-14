@@ -1,7 +1,11 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { apiRequest, apiRequestAllItems } from '../transport';
 
-export async function execute(this: IExecuteFunctions, operation: string, i: number): Promise<INodeExecutionData[]> {
+export async function execute(
+	this: IExecuteFunctions,
+	operation: string,
+	i: number,
+): Promise<INodeExecutionData[]> {
 	const wrap = (d: unknown): INodeExecutionData[] => this.helpers.returnJsonArray(d as IDataObject);
 	if (operation !== 'getAll') throw new Error(`Unknown mention operation: ${operation}`);
 	const id = this.getNodeParameter('accountId', i) as string;

@@ -39,7 +39,8 @@ export class SocialApiTrigger implements INodeType {
 				default: [],
 				options: [],
 				typeOptions: { loadOptionsMethod: 'getEvents' },
-				description: 'Which event types should start the workflow. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description:
+					'Which event types should start the workflow. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Account ID Filter',
@@ -70,7 +71,11 @@ export class SocialApiTrigger implements INodeType {
 				const data = this.getWorkflowStaticData('node');
 				if (!data.webhookId) return false;
 				try {
-					await apiRequest.call(this as unknown as IExecuteFunctions, 'GET', `/webhooks/${data.webhookId as string}`);
+					await apiRequest.call(
+						this as unknown as IExecuteFunctions,
+						'GET',
+						`/webhooks/${data.webhookId as string}`,
+					);
 					return true;
 				} catch {
 					delete data.webhookId;
@@ -81,8 +86,14 @@ export class SocialApiTrigger implements INodeType {
 			async create(this: IHookFunctions): Promise<boolean> {
 				const url = this.getNodeWebhookUrl('default') as string;
 				const events = this.getNodeParameter('events') as string[];
-				if (!events.length) throw new NodeOperationError(this.getNode(), 'Select at least one event');
-				const res = await apiRequest.call(this as unknown as IExecuteFunctions, 'POST', '/webhooks', { url, events });
+				if (!events.length)
+					throw new NodeOperationError(this.getNode(), 'Select at least one event');
+				const res = await apiRequest.call(
+					this as unknown as IExecuteFunctions,
+					'POST',
+					'/webhooks',
+					{ url, events },
+				);
 				const data = this.getWorkflowStaticData('node');
 				data.webhookId = (res as IDataObject).id;
 				data.webhookSecret = (res as IDataObject).secret;
@@ -92,7 +103,11 @@ export class SocialApiTrigger implements INodeType {
 				const data = this.getWorkflowStaticData('node');
 				if (data.webhookId) {
 					try {
-						await apiRequest.call(this as unknown as IExecuteFunctions, 'DELETE', `/webhooks/${data.webhookId as string}`);
+						await apiRequest.call(
+							this as unknown as IExecuteFunctions,
+							'DELETE',
+							`/webhooks/${data.webhookId as string}`,
+						);
 					} catch {
 						// ignore — endpoint may already be gone
 					}
@@ -115,7 +130,9 @@ export class SocialApiTrigger implements INodeType {
 		// and break the HMAC). n8n populates `req.rawBody` (a Buffer) for webhook
 		// nodes; fall back to a stringify only if it is somehow absent.
 		const signature = (this.getHeaderData()['x-socialapi-signature'] as string) || '';
-		const rawBody = ((req as any).rawBody ? (req as any).rawBody.toString('utf8') : JSON.stringify(body));
+		const rawBody = (req as any).rawBody
+			? (req as any).rawBody.toString('utf8')
+			: JSON.stringify(body);
 		if (secret && !verifySignature(rawBody, signature, secret)) {
 			const res = this.getResponseObject();
 			res.status(401).send('invalid signature');

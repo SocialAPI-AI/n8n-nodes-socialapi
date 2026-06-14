@@ -1,7 +1,11 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { apiRequest, apiRequestAllItems } from '../transport';
 
-export async function execute(this: IExecuteFunctions, operation: string, i: number): Promise<INodeExecutionData[]> {
+export async function execute(
+	this: IExecuteFunctions,
+	operation: string,
+	i: number,
+): Promise<INodeExecutionData[]> {
 	const wrap = (d: unknown): INodeExecutionData[] => this.helpers.returnJsonArray(d as IDataObject);
 	if (operation === 'getAll') {
 		const acc = this.getNodeParameter('account_id', i) as string;
@@ -14,7 +18,11 @@ export async function execute(this: IExecuteFunctions, operation: string, i: num
 	}
 	if (operation === 'reply') {
 		const id = this.getNodeParameter('reviewId', i) as string;
-		return wrap(await apiRequest.call(this, 'POST', `/inbox/reviews/${id}/reply`, { text: this.getNodeParameter('text', i) }));
+		return wrap(
+			await apiRequest.call(this, 'POST', `/inbox/reviews/${id}/reply`, {
+				text: this.getNodeParameter('text', i),
+			}),
+		);
 	}
 	throw new Error(`Unknown review operation: ${operation}`);
 }

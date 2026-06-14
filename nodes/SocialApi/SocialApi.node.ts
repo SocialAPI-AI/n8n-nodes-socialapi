@@ -15,7 +15,10 @@ import * as mention from './actions/mention';
 import * as brand from './actions/brand';
 import * as media from './actions/media';
 
-const handlers: Record<string, (this: IExecuteFunctions, op: string, i: number) => Promise<INodeExecutionData[]>> = {
+const handlers: Record<
+	string,
+	(this: IExecuteFunctions, op: string, i: number) => Promise<INodeExecutionData[]>
+> = {
 	account: account.execute,
 	post: post.execute,
 	comment: comment.execute,

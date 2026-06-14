@@ -3,7 +3,10 @@ const showFor = (ops: string[]) => ({ show: { resource: ['account'], operation: 
 
 export const accountFields: INodeProperties[] = [
 	{
-		displayName: 'Operation', name: 'operation', type: 'options', noDataExpression: true,
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
 		displayOptions: { show: { resource: ['account'] } },
 		options: [
 			{ name: 'Connect', value: 'connect', action: 'Start an account connection' },
@@ -15,10 +18,43 @@ export const accountFields: INodeProperties[] = [
 		],
 		default: 'getAll',
 	},
-	{ displayName: 'Brand ID', name: 'brand_id', type: 'string', default: '', displayOptions: showFor(['getAll']) },
-	{ displayName: 'Account ID', name: 'accountId', type: 'string', default: '', required: true,
-		displayOptions: showFor(['disconnect', 'getLimits', 'listPages']) },
-	{ displayName: 'Platform', name: 'platform', type: 'string', default: '', required: true, displayOptions: showFor(['connect']) },
-	{ displayName: 'Code', name: 'code', type: 'string', default: '', required: true, displayOptions: showFor(['exchange']) },
-	{ displayName: 'State', name: 'state', type: 'string', default: '', required: true, displayOptions: showFor(['exchange']) },
+	{
+		displayName: 'Brand ID',
+		name: 'brand_id',
+		type: 'string',
+		default: '',
+		displayOptions: showFor(['getAll']),
+	},
+	{
+		displayName: 'Account ID',
+		name: 'accountId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: showFor(['disconnect', 'getLimits', 'listPages']),
+	},
+	{
+		displayName: 'Platform',
+		name: 'platform',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: showFor(['connect']),
+	},
+	{
+		displayName: 'Code',
+		name: 'code',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: showFor(['exchange']),
+	},
+	{
+		displayName: 'State',
+		name: 'state',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: showFor(['exchange']),
+	},
 ];

@@ -1,7 +1,11 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { apiRequest, apiRequestAllItems } from '../transport';
 
-export async function execute(this: IExecuteFunctions, operation: string, i: number): Promise<INodeExecutionData[]> {
+export async function execute(
+	this: IExecuteFunctions,
+	operation: string,
+	i: number,
+): Promise<INodeExecutionData[]> {
 	const wrap = (d: unknown): INodeExecutionData[] => this.helpers.returnJsonArray(d as IDataObject);
 	const list = async (path: string, qs: IDataObject) => {
 		const returnAll = this.getNodeParameter('returnAll', i) as boolean;
@@ -27,13 +31,36 @@ export async function execute(this: IExecuteFunctions, operation: string, i: num
 
 	const commentId = this.getNodeParameter('commentId', i) as string;
 	switch (operation) {
-		case 'getReplies': return list(`/inbox/comments/${postId}/${commentId}/replies`, {});
-		case 'delete': return wrap(await apiRequest.call(this, 'DELETE', `/inbox/comments/${postId}/${commentId}`));
-		case 'hide': return wrap(await apiRequest.call(this, 'POST', `/inbox/comments/${postId}/${commentId}/hide`));
-		case 'unhide': return wrap(await apiRequest.call(this, 'DELETE', `/inbox/comments/${postId}/${commentId}/hide`));
-		case 'like': return wrap(await apiRequest.call(this, 'POST', `/inbox/comments/${postId}/${commentId}/like`));
-		case 'unlike': return wrap(await apiRequest.call(this, 'DELETE', `/inbox/comments/${postId}/${commentId}/like`));
-		case 'privateReply': return wrap(await apiRequest.call(this, 'POST', `/inbox/comments/${postId}/${commentId}/private-reply`, { text: this.getNodeParameter('text', i) }));
-		default: throw new Error(`Unknown comment operation: ${operation}`);
+		case 'getReplies':
+			return list(`/inbox/comments/${postId}/${commentId}/replies`, {});
+		case 'delete':
+			return wrap(await apiRequest.call(this, 'DELETE', `/inbox/comments/${postId}/${commentId}`));
+		case 'hide':
+			return wrap(
+				await apiRequest.call(this, 'POST', `/inbox/comments/${postId}/${commentId}/hide`),
+			);
+		case 'unhide':
+			return wrap(
+				await apiRequest.call(this, 'DELETE', `/inbox/comments/${postId}/${commentId}/hide`),
+			);
+		case 'like':
+			return wrap(
+				await apiRequest.call(this, 'POST', `/inbox/comments/${postId}/${commentId}/like`),
+			);
+		case 'unlike':
+			return wrap(
+				await apiRequest.call(this, 'DELETE', `/inbox/comments/${postId}/${commentId}/like`),
+			);
+		case 'privateReply':
+			return wrap(
+				await apiRequest.call(
+					this,
+					'POST',
+					`/inbox/comments/${postId}/${commentId}/private-reply`,
+					{ text: this.getNodeParameter('text', i) },
+				),
+			);
+		default:
+			throw new Error(`Unknown comment operation: ${operation}`);
 	}
 }

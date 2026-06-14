@@ -9,7 +9,7 @@ export const mediaFields: INodeProperties[] = [
 			{ name: 'Delete', value: 'delete', action: 'Delete a media item' },
 			{ name: 'Get Many', value: 'getAll', action: 'Get many media items' },
 			{ name: 'Get Storage Usage', value: 'storage', action: 'Get storage usage' },
-			{ name: 'Upload', value: 'upload', action: 'Upload media presign put verify' },
+			{ name: 'Upload', value: 'upload', action: 'Upload a media file' },
 		],
 		default: 'upload',
 	},

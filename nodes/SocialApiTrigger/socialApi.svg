@@ -2,16 +2,16 @@
   <title>SocialAPI.ai</title>
 
   <!-- White background -->
-  <rect width="44" height="44" fill="white"/>
+  <rect width="44" height="44" rx="10" ry="10" fill="white"/>
 
   <!-- Green glow behind center -->
   <circle cx="22" cy="22" r="9" fill="#22c55e" fill-opacity="0.12"/>
 
-  <!-- Hexagon outline, thicker, more visible -->
+  <!-- Hexagon outline — thicker, more visible -->
   <polygon points="22,7 35,14.5 35,29.5 22,37 9,29.5 9,14.5"
            stroke="#0a0a0a" stroke-width="1" stroke-opacity="0.18" fill="none" stroke-linejoin="round"/>
 
-  <!-- Spokes, thicker + higher opacity for small-size legibility -->
+  <!-- Spokes — thicker + higher opacity for small-size legibility -->
   <line x1="22"  y1="7"    x2="22" y2="22" stroke="#404040" stroke-width="1.75" stroke-opacity="0.75"/>
   <line x1="35"  y1="14.5" x2="22" y2="22" stroke="#404040" stroke-width="1.75" stroke-opacity="0.75"/>
   <line x1="35"  y1="29.5" x2="22" y2="22" stroke="#404040" stroke-width="1.75" stroke-opacity="0.75"/>
@@ -19,7 +19,7 @@
   <line x1="9"   y1="29.5" x2="22" y2="22" stroke="#404040" stroke-width="1.75" stroke-opacity="0.75"/>
   <line x1="9"   y1="14.5" x2="22" y2="22" stroke="#404040" stroke-width="1.75" stroke-opacity="0.75"/>
 
-  <!-- Platform nodes, slightly larger -->
+  <!-- Platform nodes — slightly larger -->
   <circle cx="22"  cy="7"    r="3" fill="#2a2a2a"/>
   <circle cx="35"  cy="14.5" r="3" fill="#2a2a2a"/>
   <circle cx="35"  cy="29.5" r="3" fill="#2a2a2a"/>
@@ -27,6 +27,6 @@
   <circle cx="9"   cy="29.5" r="3" fill="#2a2a2a"/>
   <circle cx="9"   cy="14.5" r="3" fill="#2a2a2a"/>
 
-  <!-- Central API endpoint, green, slightly larger -->
+  <!-- Central API endpoint — green, slightly larger -->
   <circle cx="22" cy="22" r="5.5" fill="#22c55e"/>
 </svg>

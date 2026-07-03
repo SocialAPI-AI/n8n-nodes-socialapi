@@ -5,3 +5,6 @@ dist
 
 .idea
 .claude
+
+.env*
+!.env.example

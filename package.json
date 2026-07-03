@@ -2,12 +2,25 @@
   "name": "n8n-nodes-socialapi",
   "version": "0.1.0",
   "description": "n8n community nodes for SocialAPI.ai: manage social accounts, publish posts, work the inbox, and trigger on events.",
-  "keywords": ["n8n-community-node-package", "n8n", "socialapi", "social media"],
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "socialapi",
+    "social media"
+  ],
   "license": "MIT",
   "homepage": "https://social-api.ai",
-  "author": { "name": "SocialAPI", "email": "contact@social-api.ai" },
-  "repository": { "type": "git", "url": "git+https://github.com/SocialAPI-AI/n8n-nodes-socialapi.git" },
-  "engines": { "node": ">=20.15" },
+  "author": {
+    "name": "SocialAPI",
+    "email": "contact@social-api.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SocialAPI-AI/n8n-nodes-socialapi.git"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
   "main": "index.js",
   "scripts": {
     "build": "tsc && gulp build:icons",
@@ -18,10 +31,14 @@
     "test": "jest",
     "prepublishOnly": "npm run build && npm run lint"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": ["dist/credentials/SocialApiApi.credentials.js"],
+    "credentials": [
+      "dist/credentials/SocialApiApi.credentials.js"
+    ],
     "nodes": [
       "dist/nodes/SocialApi/SocialApi.node.js",
       "dist/nodes/SocialApiTrigger/SocialApiTrigger.node.js"
@@ -38,7 +55,9 @@
     "n8n-workflow": "*",
     "prettier": "^3.3.0",
     "ts-jest": "^29.1.5",
-    "typescript": "^5.5.0"
+    "typescript": "~5.5.4"
   },
-  "peerDependencies": { "n8n-workflow": "*" }
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
 }

@@ -39,6 +39,7 @@ export class SocialApi implements INodeType {
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Manage social accounts, posts, and the inbox via SocialAPI',
 		defaults: { name: 'SocialAPI' },
+		usableAsTool: true,
 		inputs: ['main'],
 		outputs: ['main'],
 		credentials: [{ name: 'socialApiApi', required: true }],

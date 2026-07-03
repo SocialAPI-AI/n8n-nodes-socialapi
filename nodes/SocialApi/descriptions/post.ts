@@ -67,7 +67,7 @@ export const postFields: INodeProperties[] = [
 				name: 'media_ids',
 				type: 'string',
 				default: '',
-				description: 'Comma-separated media IDs from a Media → Upload step',
+				description: 'Comma-separated media IDs from a Media > Upload step',
 			},
 			{ displayName: 'Publish Now', name: 'publish_now', type: 'boolean', default: false },
 			{ displayName: 'Schedule At', name: 'scheduled_at', type: 'dateTime', default: '' },
@@ -97,7 +97,7 @@ export const postFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		displayOptions: showFor(['validate']),
-		description: 'Comma-separated media IDs to include in validation (from a Media → Upload step)',
+		description: 'Comma-separated media IDs to include in validation (from a Media > Upload step)',
 	},
 	// --- post id param ---
 	{

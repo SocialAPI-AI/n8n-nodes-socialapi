@@ -1,4 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { apiRequest, apiRequestAllItems } from '../transport';
 
 export async function execute(
@@ -24,5 +25,5 @@ export async function execute(
 			}),
 		);
 	}
-	throw new Error(`Unknown review operation: ${operation}`);
+	throw new NodeOperationError(this.getNode(), `Unknown review operation: ${operation}`);
 }

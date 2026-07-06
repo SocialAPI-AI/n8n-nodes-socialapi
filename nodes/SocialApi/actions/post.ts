@@ -1,4 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { apiRequest, apiRequestAllItems } from '../transport';
 
 const csv = (s: string): string[] =>
@@ -79,6 +80,6 @@ export async function execute(
 			return wrap(await apiRequest.call(this, 'PATCH', `/posts/${postId}`, fields));
 		}
 		default:
-			throw new Error(`Unknown post operation: ${operation}`);
+			throw new NodeOperationError(this.getNode(), `Unknown post operation: ${operation}`);
 	}
 }

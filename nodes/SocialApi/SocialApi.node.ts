@@ -3,7 +3,9 @@ import type {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	JsonObject,
 } from 'n8n-workflow';
+import { NodeApiError, NodeOperationError } from 'n8n-workflow';
 
 import { allFields } from './descriptions';
 import * as account from './actions/account';
@@ -62,7 +64,14 @@ export class SocialApi implements INodeType {
 					returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
 					continue;
 				}
-				throw error;
+				// Surface HTTP status/response context to the user. Already-typed n8n
+				// errors (e.g. NodeOperationError from an unknown operation) carry their
+				// own context and are re-thrown as-is; everything else is wrapped so the
+				// failed request's status code and body reach the workflow.
+				if (error instanceof NodeApiError || error instanceof NodeOperationError) {
+					throw error;
+				}
+				throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
 			}
 		}
 		return [returnData];

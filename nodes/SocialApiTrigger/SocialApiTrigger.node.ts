@@ -8,8 +8,9 @@ import type {
 	INodeTypeDescription,
 	IWebhookFunctions,
 	IWebhookResponseData,
+	JsonObject,
 } from 'n8n-workflow';
-import { NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeOperationError } from 'n8n-workflow';
 
 import { apiRequest } from '../SocialApi/transport';
 import { verifySignature } from './helpers';
@@ -88,12 +89,18 @@ export class SocialApiTrigger implements INodeType {
 				const events = this.getNodeParameter('events') as string[];
 				if (!events.length)
 					throw new NodeOperationError(this.getNode(), 'Select at least one event');
-				const res = await apiRequest.call(
-					this as unknown as IExecuteFunctions,
-					'POST',
-					'/webhooks',
-					{ url, events },
-				);
+				let res: IDataObject;
+				try {
+					res = await apiRequest.call(
+						this as unknown as IExecuteFunctions,
+						'POST',
+						'/webhooks',
+						{ url, events },
+					);
+				} catch (error) {
+					// Surface the registration failure's HTTP status/body to the user.
+					throw new NodeApiError(this.getNode(), error as JsonObject);
+				}
 				const data = this.getWorkflowStaticData('node');
 				data.webhookId = (res as IDataObject).id;
 				data.webhookSecret = (res as IDataObject).secret;

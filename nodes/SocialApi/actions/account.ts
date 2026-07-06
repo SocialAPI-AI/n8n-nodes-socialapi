@@ -1,4 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { apiRequest } from '../transport';
 
 export async function execute(
@@ -44,6 +45,6 @@ export async function execute(
 			return wrap(await apiRequest.call(this, 'DELETE', `/accounts/${id}`));
 		}
 		default:
-			throw new Error(`Unknown account operation: ${operation}`);
+			throw new NodeOperationError(this.getNode(), `Unknown account operation: ${operation}`);
 	}
 }

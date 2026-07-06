@@ -4,6 +4,7 @@ import type {
 	IHttpRequestMethods,
 	INodeExecutionData,
 } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { apiRequest, apiRequestAllItems } from '../transport';
 
 type ApiRequestFn = (
@@ -93,6 +94,6 @@ export async function execute(
 			return wrap(await apiRequest.call(this, 'DELETE', `/media/${id}`));
 		}
 		default:
-			throw new Error(`Unknown media operation: ${operation}`);
+			throw new NodeOperationError(this.getNode(), `Unknown media operation: ${operation}`);
 	}
 }

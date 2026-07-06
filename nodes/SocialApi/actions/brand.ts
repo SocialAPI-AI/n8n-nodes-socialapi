@@ -1,4 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { apiRequest } from '../transport';
 
 export async function execute(
@@ -29,6 +30,6 @@ export async function execute(
 			return wrap(await apiRequest.call(this, 'DELETE', `/brands/${id}`));
 		}
 		default:
-			throw new Error(`Unknown brand operation: ${operation}`);
+			throw new NodeOperationError(this.getNode(), `Unknown brand operation: ${operation}`);
 	}
 }

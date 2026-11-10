@@ -35,8 +35,9 @@ export async function execute(
 		}
 		case 'exchange': {
 			const body: IDataObject = {
+				platform: this.getNodeParameter('platform', i),
 				code: this.getNodeParameter('code', i),
-				state: this.getNodeParameter('state', i),
+				metadata: { state: this.getNodeParameter('state', i) },
 			};
 			return wrap(await apiRequest.call(this, 'POST', '/oauth/exchange', body));
 		}

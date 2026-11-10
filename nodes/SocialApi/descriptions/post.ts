@@ -70,6 +70,14 @@ export const postFields: INodeProperties[] = [
 				description: 'Comma-separated media IDs from a Media > Upload step',
 			},
 			{ displayName: 'Publish Now', name: 'publish_now', type: 'boolean', default: false },
+			{
+				displayName: 'Queue ID',
+				name: 'queue_id',
+				type: 'string',
+				default: '',
+				description:
+					'Schedule the post at the next free time of this Queue, or "default" for the Brand’s default Queue. All targets must be in one Brand. Do not combine with Schedule At or Publish Now.',
+			},
 			{ displayName: 'Schedule At', name: 'scheduled_at', type: 'dateTime', default: '' },
 			{
 				displayName: 'Skip Duplicate Check',
@@ -125,18 +133,26 @@ export const postFields: INodeProperties[] = [
 		default: {},
 		displayOptions: showFor(['update']),
 		options: [
+			{
+				displayName: 'Queue ID',
+				name: 'queue_id',
+				type: 'string',
+				default: '',
+				description:
+					'Move the post to the next free time of this Queue, or "default" for the Brand’s default Queue',
+			},
 			{ displayName: 'Schedule At', name: 'scheduled_at', type: 'dateTime', default: '' },
 			{ displayName: 'Text', name: 'text', type: 'string', typeOptions: { rows: 4 }, default: '' },
 		],
 	},
 	// --- unpublish optional account filter ---
 	{
-		displayName: 'Account IDs',
-		name: 'account_ids',
+		displayName: 'Account ID',
+		name: 'account_id',
 		type: 'string',
 		default: '',
 		displayOptions: showFor(['unpublish']),
-		description: 'Comma-separated account IDs to unpublish from (default: all)',
+		description: 'Unpublish from this account only (leave empty to unpublish everywhere)',
 	},
 	// --- list filters + pagination ---
 	{
@@ -165,9 +181,36 @@ export const postFields: INodeProperties[] = [
 		displayOptions: showFor(['getAll']),
 		options: [
 			{ displayName: 'Account IDs', name: 'account_ids', type: 'string', default: '' },
+			{ displayName: 'Brand ID', name: 'brand_id', type: 'string', default: '' },
 			{ displayName: 'From', name: 'from', type: 'dateTime', default: '' },
+			{
+				displayName: 'Include Hidden',
+				name: 'hidden',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to include posts hidden from the default list',
+			},
+			{
+				displayName: 'Page ID',
+				name: 'page_id',
+				type: 'string',
+				default: '',
+				description: 'Only posts to this page of a multi-page account, such as a Facebook Page',
+			},
 			{ displayName: 'Platform', name: 'platform', type: 'string', default: '' },
 			{ displayName: 'Search', name: 'search', type: 'string', default: '' },
+			{
+				displayName: 'Sort',
+				name: 'sort',
+				type: 'options',
+				default: 'scheduled_asc',
+				options: [
+					{ name: 'Created (Newest First)', value: 'created_desc' },
+					{ name: 'Created (Oldest First)', value: 'created_asc' },
+					{ name: 'Scheduled (Latest First)', value: 'scheduled_desc' },
+					{ name: 'Scheduled (Soonest First)', value: 'scheduled_asc' },
+				],
+			},
 			{ displayName: 'Status', name: 'status', type: 'string', default: '' },
 			{ displayName: 'To', name: 'to', type: 'dateTime', default: '' },
 		],

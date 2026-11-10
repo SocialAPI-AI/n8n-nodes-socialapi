@@ -7,6 +7,8 @@ import { reviewFields } from './review';
 import { mentionFields } from './mention';
 import { brandFields } from './brand';
 import { mediaFields } from './media';
+import { queueFields } from './queue';
+import { whatsappFields } from './whatsapp';
 
 export const resourceProperty: INodeProperties = {
 	displayName: 'Resource',
@@ -21,7 +23,9 @@ export const resourceProperty: INodeProperties = {
 		{ name: 'Media', value: 'media' },
 		{ name: 'Mention', value: 'mention' },
 		{ name: 'Post', value: 'post' },
+		{ name: 'Queue', value: 'queue' },
 		{ name: 'Review', value: 'review' },
+		{ name: 'WhatsApp', value: 'whatsapp' },
 	],
 	default: 'post',
 };
@@ -36,4 +40,6 @@ export const allFields: INodeProperties[] = [
 	...mentionFields,
 	...brandFields,
 	...mediaFields,
+	...queueFields,
+	...whatsappFields,
 ];

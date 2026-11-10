@@ -38,19 +38,21 @@ The **SocialAPI** action node and the **SocialAPI Trigger** node will appear in 
 
 | Operation | Description |
 |---|---|
-| Create | Create a post (draft, scheduled, or publish-now) |
+| Create | Create a post (draft, scheduled, publish-now, or into a Queue) |
 | Delete | Delete a post |
 | Get | Get a single post by ID |
 | Get Constraints | Fetch per-platform publishing constraints |
-| Get Many | List posts with optional filters (status, platform, date range, search) |
+| Get Many | List posts with optional filters (status, platform, brand, page, date range, search) and sort order |
 | Get Metrics | Refresh and return live engagement metrics for a post |
 | Publish Draft | Publish a saved draft immediately |
 | Retry | Retry a failed post delivery |
-| Unpublish | Unpublish a published post (optionally from specific accounts only) |
-| Update | Update a post's text or scheduled time |
+| Unpublish | Unpublish a published post (everywhere, or from one account only) |
+| Update | Update a post's text, scheduled time or Queue |
 | Validate | Validate post content against platform constraints before publishing |
 
 ### Comment
+
+Every comment operation except List Commented Posts takes the Account ID that owns the post.
 
 | Operation | Description |
 |---|---|
@@ -59,7 +61,7 @@ The **SocialAPI** action node and the **SocialAPI Trigger** node will appear in 
 | Get Replies | Get replies to a specific comment |
 | Hide | Hide a comment |
 | Like | Like a comment |
-| List Commented Posts | List inbox posts that have comments |
+| List Commented Posts | List inbox posts that have comments (filterable by account, brand, platform, date, comment count) |
 | Private Reply | Send a private DM reply to a comment author |
 | Reply | Reply to a comment (at post level or as a thread reply) |
 | Unhide | Unhide a previously hidden comment |
@@ -70,17 +72,17 @@ The **SocialAPI** action node and the **SocialAPI Trigger** node will appear in 
 | Operation | Description |
 |---|---|
 | Get | Get a single conversation by ID |
-| Get Many | List conversations (filterable by account or platform) |
+| Get Many | List conversations (filterable by account, brand, page, platform, or active/archived) |
 | List Messages | List messages in a conversation |
 | Mark Read | Mark a conversation as read |
-| Send Message | Send a direct message in a conversation |
-| Update | Update conversation metadata (e.g. mark read/unread) |
+| Send Message | Send a direct message in a conversation, from a given account |
+| Update | Archive a conversation, or move it back to active |
 
 ### Review
 
 | Operation | Description |
 |---|---|
-| Get Many | List reviews (filterable by account) |
+| Get Many | List one account's reviews, newest first or by rating |
 | Reply | Post a reply to a review |
 
 Note: only listing and replying are available over the API. Update/delete reply are not supported.
@@ -89,7 +91,8 @@ Note: only listing and replying are available over the API. Update/delete reply 
 
 | Operation | Description |
 |---|---|
-| Get Many | List mentions for a specific account |
+| Get Many | List mentions for a specific account (optionally since a date) |
+| Reply | Reply to a mention with a public comment (Instagram, Facebook, Threads, Bluesky) |
 
 ### Brand
 
@@ -110,6 +113,19 @@ Note: there is no get-single-brand operation. Use Get Many to retrieve brand det
 | Get Many | List uploaded media items |
 | Get Storage Usage | Get current storage usage for your account |
 | Upload | Upload a file using the presigned flow (presign, PUT to storage, verify). Supports binary data from a previous node or a URL. No file size cap. |
+
+### Queue
+
+| Operation | Description |
+|---|---|
+| Get Many | List Queues (optionally for one Brand), to pick a Queue ID for Post > Create |
+
+### WhatsApp
+
+| Operation | Description |
+|---|---|
+| List Templates | List the message templates on a WhatsApp account (up to 100) |
+| Send Template | Send an approved template message, including outside the 24-hour window |
 
 ## SocialAPI Trigger
 

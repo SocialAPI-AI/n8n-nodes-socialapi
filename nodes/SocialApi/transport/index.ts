@@ -25,6 +25,13 @@ export function buildRequestOptions(
 	return options;
 }
 
+/** n8n's date picker omits the UTC offset; the API only accepts RFC3339, so send UTC with `Z`. */
+export const toRfc3339 = (v: unknown): string | undefined => {
+	if (!v) return undefined;
+	const d = new Date(v as string);
+	return isNaN(d.getTime()) ? (v as string) : d.toISOString();
+};
+
 /** Make an authenticated request to SocialAPI. */
 export async function apiRequest(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
@@ -41,7 +48,7 @@ export async function apiRequest(
 
 /**
  * Follow keyset pagination (`next_cursor`) until exhausted, collecting `data[]`.
- * SocialAPI list responses are shaped `{ data: [...], next_cursor?: string }`.
+ * SocialAPI list responses are `{ data: [...] }` with the cursor at `pagination.next_cursor` or `next_cursor`.
  */
 export async function apiRequestAllItems(
 	this: IExecuteFunctions,
@@ -58,7 +65,9 @@ export async function apiRequestAllItems(
 		});
 		const data = (page.data as IDataObject[]) ?? [];
 		out.push(...data);
-		cursor = (page.next_cursor as string) || undefined;
+		// Inbox and posts lists nest the cursor under `pagination`; media and mentions keep it top-level.
+		const pagination = page.pagination as IDataObject | undefined;
+		cursor = ((pagination?.next_cursor ?? page.next_cursor) as string) || undefined;
 	} while (cursor);
 	return out;
 }

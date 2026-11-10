@@ -16,6 +16,8 @@ import * as review from './actions/review';
 import * as mention from './actions/mention';
 import * as brand from './actions/brand';
 import * as media from './actions/media';
+import * as queue from './actions/queue';
+import * as whatsapp from './actions/whatsapp';
 
 const handlers: Record<
 	string,
@@ -29,6 +31,8 @@ const handlers: Record<
 	mention: mention.execute,
 	brand: brand.execute,
 	media: media.execute,
+	queue: queue.execute,
+	whatsapp: whatsapp.execute,
 };
 
 export class SocialApi implements INodeType {

@@ -1,0 +1,573 @@
+{
+  "integration": "n8n",
+  "generated_by": "socialapi-integrations-sync",
+  "ops": [
+    {
+      "action": "account.connect",
+      "method": "POST",
+      "path": "/accounts/connect",
+      "always": [
+        "platform"
+      ],
+      "sends": [
+        "platform"
+      ]
+    },
+    {
+      "action": "account.disconnect",
+      "method": "DELETE",
+      "path": "/accounts/{accountId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "account.exchange",
+      "method": "POST",
+      "path": "/oauth/exchange",
+      "always": [
+        "code",
+        "metadata",
+        "platform"
+      ],
+      "sends": [
+        "code",
+        "metadata",
+        "platform"
+      ]
+    },
+    {
+      "action": "account.getAll",
+      "method": "GET",
+      "path": "/accounts",
+      "always": [],
+      "sends": [
+        "brand_id"
+      ]
+    },
+    {
+      "action": "account.getLimits",
+      "method": "GET",
+      "path": "/accounts/{accountId}/limits",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "account.listPages",
+      "method": "GET",
+      "path": "/accounts/{accountId}/pages",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "brand.create",
+      "method": "POST",
+      "path": "/brands",
+      "always": [
+        "name"
+      ],
+      "sends": [
+        "name"
+      ]
+    },
+    {
+      "action": "brand.delete",
+      "method": "DELETE",
+      "path": "/brands/{brandId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "brand.getAll",
+      "method": "GET",
+      "path": "/brands",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "brand.update",
+      "method": "PATCH",
+      "path": "/brands/{brandId}",
+      "always": [
+        "name"
+      ],
+      "sends": [
+        "name"
+      ]
+    },
+    {
+      "action": "comment.delete",
+      "method": "DELETE",
+      "path": "/inbox/comments/{postId}/{commentId}",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id"
+      ]
+    },
+    {
+      "action": "comment.getAll",
+      "method": "GET",
+      "path": "/inbox/comments/{postId}",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id",
+        "cursor",
+        "limit"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "comment.getReplies",
+      "method": "GET",
+      "path": "/inbox/comments/{postId}/{commentId}/replies",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id",
+        "cursor",
+        "limit"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "comment.hide",
+      "method": "POST",
+      "path": "/inbox/comments/{postId}/{commentId}/hide",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id"
+      ]
+    },
+    {
+      "action": "comment.like",
+      "method": "POST",
+      "path": "/inbox/comments/{postId}/{commentId}/like",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id"
+      ]
+    },
+    {
+      "action": "comment.listPosts",
+      "method": "GET",
+      "path": "/inbox/comments",
+      "always": [],
+      "sends": [
+        "account_id",
+        "brand_id",
+        "cursor",
+        "limit",
+        "min_comments",
+        "platform",
+        "since"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "comment.privateReply",
+      "method": "POST",
+      "path": "/inbox/comments/{postId}/{commentId}/private-reply",
+      "always": [
+        "account_id",
+        "text"
+      ],
+      "sends": [
+        "account_id",
+        "text"
+      ]
+    },
+    {
+      "action": "comment.reply",
+      "method": "POST",
+      "path": "/inbox/comments/{postId}",
+      "always": [
+        "account_id",
+        "text"
+      ],
+      "sends": [
+        "account_id",
+        "comment_id",
+        "text"
+      ]
+    },
+    {
+      "action": "comment.unhide",
+      "method": "DELETE",
+      "path": "/inbox/comments/{postId}/{commentId}/hide",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id"
+      ]
+    },
+    {
+      "action": "comment.unlike",
+      "method": "DELETE",
+      "path": "/inbox/comments/{postId}/{commentId}/like",
+      "always": [
+        "account_id"
+      ],
+      "sends": [
+        "account_id"
+      ]
+    },
+    {
+      "action": "conversation.getAll",
+      "method": "GET",
+      "path": "/inbox/conversations",
+      "always": [],
+      "sends": [
+        "account_id",
+        "brand_id",
+        "cursor",
+        "limit",
+        "page_id",
+        "platform",
+        "status"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "conversation.get",
+      "method": "GET",
+      "path": "/inbox/conversations/{conversationId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "conversation.listMessages",
+      "method": "GET",
+      "path": "/inbox/conversations/{conversationId}/messages",
+      "always": [],
+      "sends": [
+        "cursor",
+        "limit"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "conversation.markRead",
+      "method": "POST",
+      "path": "/inbox/conversations/{conversationId}/read",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "conversation.send",
+      "method": "POST",
+      "path": "/inbox/conversations/{conversationId}/messages",
+      "always": [
+        "account_id",
+        "text"
+      ],
+      "sends": [
+        "account_id",
+        "text"
+      ]
+    },
+    {
+      "action": "conversation.update",
+      "method": "PATCH",
+      "path": "/inbox/conversations/{conversationId}",
+      "always": [
+        "status"
+      ],
+      "sends": [
+        "status"
+      ]
+    },
+    {
+      "action": "media.delete",
+      "method": "DELETE",
+      "path": "/media/{mediaId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "media.getAll",
+      "method": "GET",
+      "path": "/media/",
+      "always": [],
+      "sends": [
+        "cursor",
+        "limit"
+      ]
+    },
+    {
+      "action": "media.storage",
+      "method": "GET",
+      "path": "/media/storage",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "media.upload",
+      "method": "GET",
+      "path": "/media/upload-url",
+      "always": [
+        "filename",
+        "media_type"
+      ],
+      "sends": [
+        "filename",
+        "media_type"
+      ]
+    },
+    {
+      "action": "media.upload",
+      "method": "POST",
+      "path": "/media/{resp}/verify",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "mention.getAll",
+      "method": "GET",
+      "path": "/accounts/{accountId}/mentions",
+      "always": [],
+      "sends": [
+        "cursor",
+        "limit",
+        "since"
+      ]
+    },
+    {
+      "action": "mention.reply",
+      "method": "POST",
+      "path": "/accounts/{accountId}/mentions/reply",
+      "always": [
+        "media_id",
+        "text"
+      ],
+      "sends": [
+        "comment_id",
+        "media_id",
+        "text"
+      ]
+    },
+    {
+      "action": "post.create",
+      "method": "POST",
+      "path": "/posts",
+      "always": [
+        "targets",
+        "text"
+      ],
+      "sends": [
+        "first_comment",
+        "media_ids",
+        "publish_now",
+        "queue_id",
+        "scheduled_at",
+        "skip_duplicate_check",
+        "targets",
+        "text",
+        "title",
+        "visibility"
+      ]
+    },
+    {
+      "action": "post.delete",
+      "method": "DELETE",
+      "path": "/posts/{postId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "post.getAll",
+      "method": "GET",
+      "path": "/posts",
+      "always": [],
+      "sends": [
+        "account_ids",
+        "brand_id",
+        "cursor",
+        "from",
+        "hidden",
+        "limit",
+        "page_id",
+        "platform",
+        "search",
+        "sort",
+        "status",
+        "to"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "post.getConstraints",
+      "method": "GET",
+      "path": "/posts/validate",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "post.get",
+      "method": "GET",
+      "path": "/posts/{postId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "post.getMetrics",
+      "method": "GET",
+      "path": "/posts/{postId}/metrics",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "post.publish",
+      "method": "POST",
+      "path": "/posts/{postId}/publish",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "post.retry",
+      "method": "POST",
+      "path": "/posts/{postId}/retry",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "post.unpublish",
+      "method": "POST",
+      "path": "/posts/{postId}/unpublish",
+      "always": [],
+      "sends": [
+        "account_id"
+      ]
+    },
+    {
+      "action": "post.update",
+      "method": "PATCH",
+      "path": "/posts/{postId}",
+      "always": [],
+      "sends": [
+        "queue_id",
+        "scheduled_at",
+        "text"
+      ]
+    },
+    {
+      "action": "post.validate",
+      "method": "POST",
+      "path": "/posts/validate",
+      "always": [
+        "targets",
+        "text"
+      ],
+      "sends": [
+        "media_ids",
+        "targets",
+        "text"
+      ]
+    },
+    {
+      "action": "queue.getAll",
+      "method": "GET",
+      "path": "/queues",
+      "always": [],
+      "sends": [
+        "brand_id"
+      ]
+    },
+    {
+      "action": "review.getAll",
+      "method": "GET",
+      "path": "/inbox/reviews/{account_id}",
+      "always": [
+        "order"
+      ],
+      "sends": [
+        "cursor",
+        "limit",
+        "order"
+      ],
+      "cursor_from": "pagination.next_cursor"
+    },
+    {
+      "action": "review.reply",
+      "method": "POST",
+      "path": "/inbox/reviews/{reviewId}/reply",
+      "always": [
+        "account_id",
+        "text"
+      ],
+      "sends": [
+        "account_id",
+        "text"
+      ]
+    },
+    {
+      "action": "socialApiTrigger.loadOptions.getEvents",
+      "method": "GET",
+      "path": "/webhooks/events",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "socialApiTrigger.webhook.default.checkExists",
+      "method": "GET",
+      "path": "/webhooks/{webhookId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "socialApiTrigger.webhook.default.create",
+      "method": "POST",
+      "path": "/webhooks",
+      "always": [
+        "events",
+        "url"
+      ],
+      "sends": [
+        "events",
+        "url"
+      ]
+    },
+    {
+      "action": "socialApiTrigger.webhook.default.delete",
+      "method": "DELETE",
+      "path": "/webhooks/{webhookId}",
+      "always": [],
+      "sends": []
+    },
+    {
+      "action": "whatsapp.listTemplates",
+      "method": "GET",
+      "path": "/platforms/whatsapp/accounts/{accountId}/templates",
+      "always": [
+        "limit"
+      ],
+      "sends": [
+        "limit"
+      ]
+    },
+    {
+      "action": "whatsapp.sendTemplate",
+      "method": "POST",
+      "path": "/platforms/whatsapp/accounts/{accountId}/send-template",
+      "always": [
+        "language",
+        "template_name",
+        "to"
+      ],
+      "sends": [
+        "components",
+        "language",
+        "template_name",
+        "to"
+      ]
+    }
+  ]
+}

@@ -32,6 +32,7 @@ export async function execute(
 		case 'send':
 			return wrap(
 				await apiRequest.call(this, 'POST', `/inbox/conversations/${id}/messages`, {
+					account_id: this.getNodeParameter('account_id', i),
 					text: this.getNodeParameter('text', i),
 				}),
 			);
@@ -40,7 +41,7 @@ export async function execute(
 		case 'update':
 			return wrap(
 				await apiRequest.call(this, 'PATCH', `/inbox/conversations/${id}`, {
-					is_read: this.getNodeParameter('is_read', i),
+					status: this.getNodeParameter('status', i),
 				}),
 			);
 		default:

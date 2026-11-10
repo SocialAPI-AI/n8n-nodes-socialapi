@@ -39,7 +39,7 @@ export const accountFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		displayOptions: showFor(['connect']),
+		displayOptions: showFor(['connect', 'exchange']),
 	},
 	{
 		displayName: 'Code',

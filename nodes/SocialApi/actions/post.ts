@@ -1,6 +1,6 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import { apiRequest, apiRequestAllItems } from '../transport';
+import { apiRequest, apiRequestAllItems, toRfc3339 } from '../transport';
 
 const csv = (s: string): string[] =>
 	s
@@ -32,7 +32,8 @@ export async function execute(
 			if (add.media_ids) body.media_ids = csv(add.media_ids as string);
 			if (add.visibility) body.visibility = add.visibility;
 			if (add.first_comment) body.first_comment = add.first_comment;
-			if (add.scheduled_at) body.scheduled_at = add.scheduled_at;
+			if (add.scheduled_at) body.scheduled_at = toRfc3339(add.scheduled_at);
+			if (add.queue_id) body.queue_id = add.queue_id;
 			if (add.publish_now) body.publish_now = add.publish_now;
 			if (add.skip_duplicate_check) body.skip_duplicate_check = add.skip_duplicate_check;
 		} else {
@@ -47,7 +48,7 @@ export async function execute(
 	if (operation === 'getAll') {
 		const filters = this.getNodeParameter('filters', i) as IDataObject;
 		const qs: IDataObject = {};
-		for (const [k, v] of Object.entries(filters)) if (v) qs[k] = v;
+		for (const [k, v] of Object.entries(filters)) if (v) qs[k] = k === 'from' || k === 'to' ? toRfc3339(v) : v;
 		const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 		if (returnAll) return wrap(await apiRequestAllItems.call(this, 'GET', '/posts', qs));
 		qs.limit = this.getNodeParameter('limit', i) as number;
@@ -71,12 +72,13 @@ export async function execute(
 		case 'retry':
 			return wrap(await apiRequest.call(this, 'POST', `/posts/${postId}/retry`));
 		case 'unpublish': {
-			const ids = this.getNodeParameter('account_ids', i) as string;
-			const body: IDataObject = ids ? { account_ids: csv(ids) } : {};
+			const account_id = this.getNodeParameter('account_id', i) as string;
+			const body: IDataObject = account_id ? { account_id } : {};
 			return wrap(await apiRequest.call(this, 'POST', `/posts/${postId}/unpublish`, body));
 		}
 		case 'update': {
-			const fields = this.getNodeParameter('updateFields', i) as IDataObject;
+			const fields = { ...(this.getNodeParameter('updateFields', i) as IDataObject) };
+			if (fields.scheduled_at) fields.scheduled_at = toRfc3339(fields.scheduled_at);
 			return wrap(await apiRequest.call(this, 'PATCH', `/posts/${postId}`, fields));
 		}
 		default:

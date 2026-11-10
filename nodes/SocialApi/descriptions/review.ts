@@ -36,6 +36,20 @@ export const reviewFields: INodeProperties[] = [
 		name: 'account_id',
 		type: 'string',
 		default: '',
+		required: true,
+		displayOptions: showFor(['getAll', 'reply']),
+		description: 'The connected account the reviews belong to',
+	},
+	{
+		displayName: 'Order',
+		name: 'order',
+		type: 'options',
+		default: 'newest',
+		options: [
+			{ name: 'Newest First', value: 'newest' },
+			{ name: 'Lowest Rating First', value: 'rating_asc' },
+			{ name: 'Highest Rating First', value: 'rating_desc' },
+		],
 		displayOptions: showFor(['getAll']),
 	},
 	{

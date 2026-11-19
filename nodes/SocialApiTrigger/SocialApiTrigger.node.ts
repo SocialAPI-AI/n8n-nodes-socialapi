@@ -10,7 +10,7 @@ import type {
 	IWebhookResponseData,
 	JsonObject,
 } from 'n8n-workflow';
-import { NodeApiError, NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
 import { apiRequest } from '../SocialApi/transport';
 import { verifySignature } from './helpers';
@@ -19,14 +19,15 @@ export class SocialApiTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'SocialAPI Trigger',
 		name: 'socialApiTrigger',
-		icon: 'file:socialApi.svg',
+		// The icon carries its own white background, so one file suits both themes.
+		icon: { light: 'file:socialApi.svg', dark: 'file:socialApi.svg' },
 		group: ['trigger'],
 		version: 1,
 		subtitle: '={{$parameter["events"].join(", ")}}',
 		description: 'Starts a workflow on SocialAPI events (comments, DMs, reviews, mentions, posts)',
 		defaults: { name: 'SocialAPI Trigger' },
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'socialApiApi', required: true }],
 		webhooks: [
 			{ name: 'default', httpMethod: 'POST', responseMode: 'onReceived', path: 'webhook' },
@@ -109,14 +110,23 @@ export class SocialApiTrigger implements INodeType {
 			async delete(this: IHookFunctions): Promise<boolean> {
 				const data = this.getWorkflowStaticData('node');
 				if (data.webhookId) {
+					const webhookId = data.webhookId as string;
 					try {
 						await apiRequest.call(
 							this as unknown as IExecuteFunctions,
 							'DELETE',
-							`/webhooks/${data.webhookId as string}`,
+							`/webhooks/${webhookId}`,
 						);
-					} catch {
-						// ignore: endpoint may already be gone
+					} catch (error) {
+						// A 404 means the webhook is already gone, which is the goal. Any
+						// other failure is logged rather than thrown so it never blocks
+						// deactivating the workflow.
+						const alreadyGone = error instanceof NodeApiError && error.httpCode === '404';
+						if (!alreadyGone) {
+							this.logger.warn(
+								`SocialAPI Trigger: could not delete webhook ${webhookId}: ${(error as Error).message}`,
+							);
+						}
 					}
 					delete data.webhookId;
 					delete data.webhookSecret;

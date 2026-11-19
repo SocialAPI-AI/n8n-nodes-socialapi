@@ -5,7 +5,7 @@ import type {
 	INodeTypeDescription,
 	JsonObject,
 } from 'n8n-workflow';
-import { NodeApiError, NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
 import { allFields } from './descriptions';
 import * as account from './actions/account';
@@ -39,15 +39,16 @@ export class SocialApi implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'SocialAPI',
 		name: 'socialApi',
-		icon: 'file:socialApi.svg',
+		// The icon carries its own white background, so one file suits both themes.
+		icon: { light: 'file:socialApi.svg', dark: 'file:socialApi.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Manage social accounts, posts, and the inbox via SocialAPI',
 		defaults: { name: 'SocialAPI' },
 		usableAsTool: true,
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'socialApiApi', required: true }],
 		properties: allFields,
 	};
@@ -68,12 +69,13 @@ export class SocialApi implements INodeType {
 					returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
 					continue;
 				}
-				// Surface HTTP status/response context to the user. Already-typed n8n
-				// errors (e.g. NodeOperationError from an unknown operation) carry their
-				// own context and are re-thrown as-is; everything else is wrapped so the
-				// failed request's status code and body reach the workflow.
-				if (error instanceof NodeApiError || error instanceof NodeOperationError) {
-					throw error;
+				// Both constructors return an existing instance of their own class
+				// unchanged, so already-typed errors (e.g. NodeOperationError from an
+				// unknown operation, NodeApiError from the HTTP helper) keep their own
+				// context; anything else is wrapped so the failed request's status code
+				// and body reach the workflow.
+				if (error instanceof NodeOperationError) {
+					throw new NodeOperationError(this.getNode(), error, { itemIndex: i });
 				}
 				throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
 			}
